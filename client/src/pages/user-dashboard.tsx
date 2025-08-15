@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChartLine, FileSpreadsheet, CheckCircle, Clock, BarChart, LogOut, Clock4 } from "lucide-react";
 import FileUpload from "@/components/file-upload";
 import ChartGenerator from "@/components/chart-generator";
+import ChartsList from "@/components/charts-list";
 
 interface Stats {
   totalUploads: number;
@@ -148,26 +149,9 @@ export default function UserDashboard() {
           </div>
         </div>
 
-        {/* Chart Preview Section */}
+        {/* Charts List Section */}
         <div className="mt-8">
-          <Card className="shadow-sm">
-            <CardContent className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <BarChart className="mr-2 text-blue-600" size={20} />
-                  Chart Preview
-                </h2>
-              </div>
-              
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg h-96 flex items-center justify-center text-white">
-                <div className="text-center">
-                  <ChartLine className="mx-auto mb-4 opacity-50" size={64} />
-                  <h3 className="text-xl font-medium mb-2">Your Chart Will Appear Here</h3>
-                  <p className="opacity-75">Select your data and chart type to get started</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ChartsList />
         </div>
       </div>
     </div>
