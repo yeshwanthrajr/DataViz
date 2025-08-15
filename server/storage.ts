@@ -42,7 +42,7 @@ export class MemStorage implements IStorage {
     this.users.set(superAdminId, {
       id: superAdminId,
       email: "superadmin@datavizpro.com",
-      password: "$2a$10$rQH.0m2zQXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2", // password: admin123
+      password: "$2b$10$1SwkOhQbT0HjRgj2.tsVqOasCc.IMnvO9wCwf1pVZXwvLAVW5r6rG", // password: admin123
       role: "superadmin",
       name: "Super Admin",
       createdAt: new Date(),
@@ -53,7 +53,7 @@ export class MemStorage implements IStorage {
     this.users.set(adminId, {
       id: adminId,
       email: "admin@datavizpro.com",
-      password: "$2a$10$rQH.0m2zQXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2", // password: admin123
+      password: "$2b$10$1SwkOhQbT0HjRgj2.tsVqOasCc.IMnvO9wCwf1pVZXwvLAVW5r6rG", // password: admin123
       role: "admin",
       name: "Admin User",
       createdAt: new Date(),
@@ -64,7 +64,7 @@ export class MemStorage implements IStorage {
     this.users.set(userId, {
       id: userId,
       email: "user@datavizpro.com",
-      password: "$2a$10$rQH.0m2zQXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2zGXm2", // password: admin123
+      password: "$2b$10$1SwkOhQbT0HjRgj2.tsVqOasCc.IMnvO9wCwf1pVZXwvLAVW5r6rG", // password: admin123
       role: "user",
       name: "John Doe",
       createdAt: new Date(),

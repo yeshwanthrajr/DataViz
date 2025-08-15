@@ -1,0 +1,13 @@
+Product,Sales,Month,Region
+Laptop,1500,January,North
+Desktop,900,January,South
+Tablet,1200,January,East
+Phone,2100,January,West
+Laptop,1800,February,North
+Desktop,950,February,South
+Tablet,1050,February,East
+Phone,2300,February,West
+Laptop,1650,March,North
+Desktop,1100,March,South
+Tablet,1350,March,East
+Phone,2000,March,West

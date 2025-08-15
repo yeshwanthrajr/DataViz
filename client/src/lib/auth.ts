@@ -1,10 +1,4 @@
-import { apiRequest } from "./queryClient";
-
-// Update apiRequest to include auth token
-const originalApiRequest = apiRequest;
-
-export { originalApiRequest as baseApiRequest };
-
+// Enhanced API request with token handling
 export async function apiRequest(
   method: string,
   url: string,

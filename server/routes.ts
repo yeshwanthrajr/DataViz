@@ -157,11 +157,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "No file uploaded" });
       }
 
+      console.log("Processing file:", req.file.originalname, "at path:", req.file.path);
+
       // Parse Excel file
       const workbook = XLSX.readFile(req.file.path);
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const data = XLSX.utils.sheet_to_json(worksheet);
+
+      console.log("Parsed", data.length, "rows from Excel file");
 
       // Create file record
       const file = await storage.createFile({
@@ -173,9 +177,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: data,
       });
 
+      console.log("File record created:", file.id);
       res.json(file);
     } catch (error) {
-      res.status(500).json({ message: "Error processing file" });
+      console.error("File upload error:", error);
+      res.status(500).json({ message: "Error processing file", error: error.message });
     }
   });
 
