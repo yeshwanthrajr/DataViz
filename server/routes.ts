@@ -286,6 +286,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Chart routes
   app.post("/api/charts", authenticateToken, async (req: any, res) => {
     try {
+      console.log("Chart creation request body:", JSON.stringify(req.body, null, 2));
+      console.log("User ID:", req.user.id);
+      
       const chartData = insertChartSchema.parse(req.body);
       
       // Verify user owns the file or has admin privileges
@@ -307,12 +310,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userId: req.user.id,
       });
 
+      console.log("Chart created successfully:", chart.id);
       res.json(chart);
     } catch (error) {
+      console.error("Chart creation error:", error);
       if (error instanceof z.ZodError) {
+        console.log("Validation errors:", error.errors);
         return res.status(400).json({ message: "Invalid input", errors: error.errors });
       }
-      res.status(500).json({ message: "Server error" });
+      res.status(500).json({ message: "Server error", error: error.message });
     }
   });
 

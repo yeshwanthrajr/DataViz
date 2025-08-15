@@ -62,6 +62,7 @@ export const insertFileSchema = createInsertSchema(files).omit({
 export const insertChartSchema = createInsertSchema(charts).omit({
   id: true,
   createdAt: true,
+  userId: true, // userId will be added by the server
 });
 
 export const insertAdminRequestSchema = createInsertSchema(adminRequests).omit({
