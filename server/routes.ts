@@ -5,7 +5,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import multer from "multer";
 import path from "path";
-import * as XLSX from "xlsx";
+import fs from "fs";
+// XLSX will be imported dynamically
 import { insertUserSchema, insertFileSchema, insertChartSchema, insertAdminRequestSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -17,12 +18,17 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     const allowedTypes = [
       "application/vnd.ms-excel",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "text/csv",
+      "application/csv"
     ];
-    if (allowedTypes.includes(file.mimetype)) {
+    const allowedExtensions = ['.xlsx', '.xls', '.csv'];
+    const fileExtension = path.extname(file.originalname).toLowerCase();
+    
+    if (allowedTypes.includes(file.mimetype) || allowedExtensions.includes(fileExtension)) {
       cb(null, true);
     } else {
-      cb(new Error("Only Excel files are allowed"));
+      cb(new Error("Only Excel (.xlsx, .xls) and CSV files are allowed"));
     }
   },
   limits: {
@@ -158,14 +164,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       console.log("Processing file:", req.file.originalname, "at path:", req.file.path);
+      
+      let data: any[] = [];
+      const fileExtension = path.extname(req.file.originalname).toLowerCase();
+      
+      if (fileExtension === '.csv') {
+        // Parse CSV file manually
+        const fileContent = fs.readFileSync(req.file.path, 'utf-8');
+        const lines = fileContent.trim().split('\n');
+        const headers = lines[0].split(',');
+        
+        data = lines.slice(1).map(line => {
+          const values = line.split(',');
+          const row: any = {};
+          headers.forEach((header, index) => {
+            row[header] = values[index] || '';
+          });
+          return row;
+        });
+      } else {
+        // For Excel files, use dynamic import of XLSX
+        try {
+          const XLSXModule = await import("xlsx");
+          const XLSX = XLSXModule.default || XLSXModule;
+          
+          const workbook = XLSX.readFile(req.file.path);
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          data = XLSX.utils.sheet_to_json(worksheet);
+        } catch (xlsxError) {
+          console.error("XLSX processing error:", xlsxError);
+          throw new Error("Unable to process Excel file");
+        }
+      }
 
-      // Parse Excel file
-      const workbook = XLSX.readFile(req.file.path);
-      const sheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[sheetName];
-      const data = XLSX.utils.sheet_to_json(worksheet);
-
-      console.log("Parsed", data.length, "rows from Excel file");
+      console.log("Parsed", data.length, "rows from file");
 
       // Create file record
       const file = await storage.createFile({
