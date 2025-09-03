@@ -236,6 +236,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // IMPORTANT: This route must come BEFORE /api/files/:id to avoid conflicts
+  app.get("/api/files/pending", authenticateToken, requireRole(["admin", "superadmin"]), async (req, res) => {
+    try {
+      const files = await storage.getPendingFiles();
+      res.json(files);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+
   app.get("/api/files/:id", authenticateToken, async (req: any, res) => {
     try {
       const { id } = req.params;
@@ -251,15 +261,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       res.json(file);
-    } catch (error) {
-      res.status(500).json({ message: "Server error" });
-    }
-  });
-
-  app.get("/api/files/pending", authenticateToken, requireRole(["admin", "superadmin"]), async (req, res) => {
-    try {
-      const files = await storage.getPendingFiles();
-      res.json(files);
     } catch (error) {
       res.status(500).json({ message: "Server error" });
     }

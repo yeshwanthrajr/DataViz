@@ -245,7 +245,7 @@
       "filename": "713dd9ef8a4520d40b642d6824859098",
       "originalName": "On the Rise Bakery Web Traffic.xlsx",
       "path": "uploads\\713dd9ef8a4520d40b642d6824859098",
-      "status": "pending",
+      "status": "approved",
       "data": [
         {
           "City": "Amsterdam",
@@ -449,8 +449,8 @@
         }
       ],
       "uploadedAt": "2025-09-03T06:35:18.126Z",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "37d4de3c-a1ba-4c92-bd1f-4fe23535cf2c",
+      "approvedAt": "2025-09-03T14:57:40.676Z"
     },
     {
       "id": "b8a6cba4-a8fc-4d9b-9f13-0baddf599472",
@@ -458,7 +458,7 @@
       "filename": "5a6eca956c2da45d3f7de35b9aed929f",
       "originalName": "On the Rise Bakery Web Traffic.xlsx",
       "path": "uploads\\5a6eca956c2da45d3f7de35b9aed929f",
-      "status": "pending",
+      "status": "approved",
       "data": [
         {
           "City": "Amsterdam",
@@ -662,8 +662,93 @@
         }
       ],
       "uploadedAt": "2025-09-03T07:04:39.036Z",
-      "approvedBy": null,
-      "approvedAt": null
+      "approvedBy": "37d4de3c-a1ba-4c92-bd1f-4fe23535cf2c",
+      "approvedAt": "2025-09-03T14:57:41.448Z"
+    },
+    {
+      "id": "550c3987-db79-411d-8ee7-d87a4ee603cf",
+      "userId": "39440964-70b1-4860-b4f6-6a24e6e6302e",
+      "filename": "1e72ef15c1501fcafb591d7b7e508858",
+      "originalName": "test-data.csv",
+      "path": "uploads\\1e72ef15c1501fcafb591d7b7e508858",
+      "status": "approved",
+      "data": [
+        {
+          "Product": "Laptop",
+          "Sales": "1500",
+          "Month": "January",
+          "Region": "North"
+        },
+        {
+          "Product": "Desktop",
+          "Sales": "900",
+          "Month": "January",
+          "Region": "South"
+        },
+        {
+          "Product": "Tablet",
+          "Sales": "1200",
+          "Month": "January",
+          "Region": "East"
+        },
+        {
+          "Product": "Phone",
+          "Sales": "2100",
+          "Month": "January",
+          "Region": "West"
+        },
+        {
+          "Product": "Laptop",
+          "Sales": "1800",
+          "Month": "February",
+          "Region": "North"
+        },
+        {
+          "Product": "Desktop",
+          "Sales": "950",
+          "Month": "February",
+          "Region": "South"
+        },
+        {
+          "Product": "Tablet",
+          "Sales": "1050",
+          "Month": "February",
+          "Region": "East"
+        },
+        {
+          "Product": "Phone",
+          "Sales": "2300",
+          "Month": "February",
+          "Region": "West"
+        },
+        {
+          "Product": "Laptop",
+          "Sales": "1650",
+          "Month": "March",
+          "Region": "North"
+        },
+        {
+          "Product": "Desktop",
+          "Sales": "1100",
+          "Month": "March",
+          "Region": "South"
+        },
+        {
+          "Product": "Tablet",
+          "Sales": "1350",
+          "Month": "March",
+          "Region": "East"
+        },
+        {
+          "Product": "Phone",
+          "Sales": "2000",
+          "Month": "March",
+          "Region": "West"
+        }
+      ],
+      "uploadedAt": "2025-09-03T14:32:26.089Z",
+      "approvedBy": "5c616e41-e1a1-42d7-838c-076ff91d480a",
+      "approvedAt": "2025-09-03T14:34:04.736Z"
     }
   ],
   "charts": [
@@ -732,6 +817,17 @@
       "yAxis": "Avg. # of Page Views per Visitor ",
       "config": {},
       "createdAt": "2025-09-03T07:02:18.164Z"
+    },
+    {
+      "id": "8bfa9030-a4e6-4912-9f9b-66d429501c1a",
+      "userId": "39440964-70b1-4860-b4f6-6a24e6e6302e",
+      "fileId": "6aec2c57-d2a2-47c3-973e-6e2a0da41704",
+      "title": "Website Traffic by Region",
+      "type": "bar",
+      "xAxis": "Region",
+      "yAxis": "Number of Unique Visitors",
+      "config": {},
+      "createdAt": "2025-09-03T14:32:55.440Z"
     }
   ],
   "adminRequests": []
