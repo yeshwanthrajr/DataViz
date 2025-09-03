@@ -221,7 +221,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/files", authenticateToken, async (req: any, res) => {
     try {
       let files;
-      
+
       if (req.user.role === "superadmin") {
         files = await storage.getAllFiles();
       } else if (req.user.role === "admin") {
@@ -236,7 +236,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/files/pending", authenticateToken, requireRole(["superadmin"]), async (req, res) => {
+  app.get("/api/files/:id", authenticateToken, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const file = await storage.getFile(id);
+
+      if (!file) {
+        return res.status(404).json({ message: "File not found" });
+      }
+
+      // Check if user has access to this file
+      if (file.userId !== req.user.id && !["admin", "superadmin"].includes(req.user.role)) {
+        return res.status(403).json({ message: "Access denied" });
+      }
+
+      res.json(file);
+    } catch (error) {
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+
+  app.get("/api/files/pending", authenticateToken, requireRole(["admin", "superadmin"]), async (req, res) => {
     try {
       const files = await storage.getPendingFiles();
       res.json(files);
@@ -245,7 +265,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/files/:id/approve", authenticateToken, requireRole(["superadmin"]), async (req: any, res) => {
+  app.patch("/api/files/:id/approve", authenticateToken, requireRole(["admin", "superadmin"]), async (req: any, res) => {
     try {
       const { id } = req.params;
       const file = await storage.updateFile(id, {
@@ -264,7 +284,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/files/:id/reject", authenticateToken, requireRole(["superadmin"]), async (req: any, res) => {
+  app.patch("/api/files/:id/reject", authenticateToken, requireRole(["admin", "superadmin"]), async (req: any, res) => {
     try {
       const { id } = req.params;
       const file = await storage.updateFile(id, {
@@ -308,7 +328,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const chart = await storage.createChart({
         ...chartData,
         userId: req.user.id,
-      });
+      } as any);
 
       console.log("Chart created successfully:", chart.id);
       res.json(chart);
@@ -490,7 +510,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const users = await storage.getAllUsers();
       const files = await storage.getAllFiles();
-      
+      const pendingFiles = await storage.getPendingFiles();
+
       const stats = {
         activeUsers: users.filter(u => u.role === "user").length,
         monthlyFiles: files.filter(f => {
@@ -500,6 +521,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }).length,
         chartsGenerated: 0, // Would need to calculate from all users
         storageUsed: "2.4GB", // Mock value
+        pendingApprovals: pendingFiles.length,
       };
 
       res.json(stats);

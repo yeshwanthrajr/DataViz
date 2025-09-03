@@ -1,14 +1,29 @@
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { Bus, Users, FileSpreadsheet, TrendingUp, Database, LogOut, Download, HardDrive, Settings } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/auth";
+import { useToast } from "@/hooks/use-toast";
+import { Bus, Users, FileSpreadsheet, TrendingUp, Database, LogOut, Download, HardDrive, Settings, FileCheck, Check, X, Eye, Clock } from "lucide-react";
 
 interface AdminStats {
   activeUsers: number;
   monthlyFiles: number;
   chartsGenerated: number;
   storageUsed: string;
+  pendingApprovals: number;
+}
+
+interface PendingFile {
+  id: string;
+  originalName: string;
+  userId: string;
+  uploadedAt: string;
+  user?: {
+    name: string;
+    email: string;
+  };
 }
 
 interface Activity {
@@ -21,9 +36,72 @@ interface Activity {
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
-  
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const { data: stats } = useQuery<AdminStats>({
     queryKey: ["/api/stats/admin"],
+  });
+
+  const { data: pendingFiles = [] } = useQuery<PendingFile[]>({
+    queryKey: ["/api/files/pending"],
+  });
+
+  // File approval mutations
+  const approveFileMutation = useMutation({
+    mutationFn: async (fileId: string) => {
+      const response = await apiRequest("PATCH", `/api/files/${fileId}/approve`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to approve file");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "File approved",
+        description: "File has been approved for processing",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/files/pending"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats/admin"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/files"] });
+    },
+    onError: (error: any) => {
+      console.error("Approval error:", error);
+      toast({
+        title: "Error approving file",
+        description: error.message || "An unexpected error occurred",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const rejectFileMutation = useMutation({
+    mutationFn: async (fileId: string) => {
+      const response = await apiRequest("PATCH", `/api/files/${fileId}/reject`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to reject file");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "File rejected",
+        description: "File has been rejected",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/files/pending"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats/admin"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/files"] });
+    },
+    onError: (error: any) => {
+      console.error("Rejection error:", error);
+      toast({
+        title: "Error rejecting file",
+        description: error.message || "An unexpected error occurred",
+        variant: "destructive",
+      });
+    },
   });
 
   // Mock activity data since we don't have this endpoint yet
@@ -100,7 +178,7 @@ export default function AdminDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Admin Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           <Card className="shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center">
@@ -111,6 +189,22 @@ export default function AdminDashboard() {
                   <p className="text-sm text-gray-600">Active Users</p>
                   <p className="text-2xl font-semibold text-gray-900" data-testid="stat-active-users">
                     {stats?.activeUsers || 0}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-sm">
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                  <Clock className="text-yellow-600" size={24} />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm text-gray-600">Pending Approvals</p>
+                  <p className="text-2xl font-semibold text-gray-900" data-testid="stat-pending-approvals">
+                    {stats?.pendingApprovals || pendingFiles.length}
                   </p>
                 </div>
               </div>
@@ -167,6 +261,76 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* File Approval Queue */}
+          <Card className="shadow-sm">
+            <CardContent className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <FileCheck className="mr-2 text-green-600" size={20} />
+                File Approval Queue
+              </h2>
+
+              <div className="space-y-4">
+                {pendingFiles.map((file) => (
+                  <div
+                    key={file.id}
+                    className="border border-gray-200 rounded-lg p-4"
+                    data-testid={`file-${file.id}`}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center">
+                        <FileSpreadsheet className="text-green-600 mr-3" size={20} />
+                        <div>
+                          <p className="font-medium text-gray-900">{file.originalName}</p>
+                          <p className="text-sm text-gray-600">
+                            Uploaded by: User {file.userId.slice(0, 8)}...
+                          </p>
+                        </div>
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        {new Date(file.uploadedAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex space-x-3">
+                      <Button
+                        onClick={() => approveFileMutation.mutate(file.id)}
+                        disabled={approveFileMutation.isPending}
+                        className="flex-1 bg-green-600 text-white hover:bg-green-700"
+                        data-testid={`approve-file-${file.id}`}
+                      >
+                        <Check className="mr-2" size={16} />
+                        Approve
+                      </Button>
+                      <Button
+                        onClick={() => rejectFileMutation.mutate(file.id)}
+                        disabled={rejectFileMutation.isPending}
+                        className="flex-1 bg-red-600 text-white hover:bg-red-700"
+                        data-testid={`reject-file-${file.id}`}
+                      >
+                        <X className="mr-2" size={16} />
+                        Reject
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="px-4"
+                        data-testid={`preview-file-${file.id}`}
+                      >
+                        <Eye size={16} />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+
+                {pendingFiles.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    <FileCheck className="mx-auto mb-2" size={48} />
+                    <p>No pending file approvals</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
           {/* User Activity Monitoring */}
           <Card className="shadow-sm">
             <CardContent className="p-6">

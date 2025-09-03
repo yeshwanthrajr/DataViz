@@ -1,5 +1,8 @@
 import { type User, type InsertUser, type File, type InsertFile, type Chart, type InsertChart, type AdminRequest, type InsertAdminRequest } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { DbStorage } from "./db-storage";
+import { JsonStorage } from "./json-storage";
+import { MySqlStorage } from "./mysql-storage";
 
 export interface IStorage {
   // Users
@@ -18,7 +21,7 @@ export interface IStorage {
   getAllFiles(): Promise<File[]>;
 
   // Charts
-  createChart(chart: InsertChart): Promise<Chart>;
+  createChart(chart: InsertChart & { userId: string }): Promise<Chart>;
   getChart(id: string): Promise<Chart | undefined>;
   getChartsByUser(userId: string): Promise<Chart[]>;
   getChartsByFile(fileId: string): Promise<Chart[]>;
@@ -82,10 +85,11 @@ export class MemStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
-    const user: User = { 
-      ...insertUser, 
-      id, 
-      createdAt: new Date() 
+    const user: User = {
+      ...insertUser,
+      id,
+      role: insertUser.role || "user",
+      createdAt: new Date()
     };
     this.users.set(id, user);
     return user;
@@ -107,9 +111,11 @@ export class MemStorage implements IStorage {
   // Files
   async createFile(insertFile: InsertFile): Promise<File> {
     const id = randomUUID();
-    const file: File = { 
-      ...insertFile, 
-      id, 
+    const file: File = {
+      ...insertFile,
+      id,
+      data: insertFile.data || [],
+      status: insertFile.status || "pending",
       uploadedAt: new Date(),
       approvedBy: null,
       approvedAt: null,
@@ -144,12 +150,13 @@ export class MemStorage implements IStorage {
   }
 
   // Charts
-  async createChart(insertChart: InsertChart): Promise<Chart> {
+  async createChart(insertChart: InsertChart & { userId: string }): Promise<Chart> {
     const id = randomUUID();
-    const chart: Chart = { 
-      ...insertChart, 
-      id, 
-      createdAt: new Date() 
+    const chart: Chart = {
+      ...insertChart,
+      id,
+      config: insertChart.config || {},
+      createdAt: new Date()
     };
     this.charts.set(id, chart);
     return chart;
@@ -170,9 +177,10 @@ export class MemStorage implements IStorage {
   // Admin Requests
   async createAdminRequest(insertRequest: InsertAdminRequest): Promise<AdminRequest> {
     const id = randomUUID();
-    const request: AdminRequest = { 
-      ...insertRequest, 
-      id, 
+    const request: AdminRequest = {
+      ...insertRequest,
+      id,
+      status: insertRequest.status || "pending",
       requestedAt: new Date(),
       reviewedBy: null,
       reviewedAt: null,
@@ -199,4 +207,57 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Storage selection logic
+const storageType = process.env.STORAGE_TYPE || "memory"; // memory, json, mysql, postgres
+console.log("🔍 Detected STORAGE_TYPE:", storageType);
+console.log("🔍 Available env vars:", Object.keys(process.env).filter(key => key.includes("STORAGE") || key.includes("DATABASE")));
+
+let storage: IStorage;
+
+switch (storageType.toLowerCase()) {
+  case "postgres":
+  case "postgresql":
+    if (process.env.DATABASE_URL) {
+      try {
+        const dbStorage = new DbStorage();
+        storage = dbStorage;
+        console.log("✅ Using PostgreSQL database storage");
+      } catch (error) {
+        console.error("❌ Failed to initialize PostgreSQL storage, falling back to JSON:", error);
+        storage = new JsonStorage();
+      }
+    } else {
+      console.log("⚠️  DATABASE_URL not set, falling back to JSON storage");
+      storage = new JsonStorage();
+    }
+    break;
+
+  case "mysql":
+    try {
+      const mysqlStorage = new MySqlStorage();
+      storage = mysqlStorage;
+      console.log("✅ Using MySQL database storage");
+    } catch (error) {
+      console.error("❌ Failed to initialize MySQL storage, falling back to JSON:", error);
+      storage = new JsonStorage();
+    }
+    break;
+
+  case "json":
+    try {
+      storage = new JsonStorage();
+      console.log("✅ Using JSON file storage");
+    } catch (error) {
+      console.error("❌ Failed to initialize JSON storage, falling back to memory:", error);
+      storage = new MemStorage();
+    }
+    break;
+
+  case "memory":
+  default:
+    console.log("✅ Using in-memory storage");
+    storage = new MemStorage();
+    break;
+}
+
+export { storage };

@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { BarChart3, TrendingUp, PieChart, LineChart, Eye, Download, Trash2 } from "lucide-react";
+import ChartRenderer from "./chart-renderer";
 
 interface Chart {
   id: string;
@@ -11,6 +14,7 @@ interface Chart {
   xAxis: string;
   yAxis: string;
   fileId: string;
+  config: any;
   createdAt: string;
 }
 
@@ -43,6 +47,7 @@ const getChartTypeLabel = (type: string) => {
 };
 
 export default function ChartsList() {
+  const [openChartId, setOpenChartId] = React.useState<string | null>(null);
   const { data: charts = [], isLoading } = useQuery<Chart[]>({
     queryKey: ["/api/charts"],
   });
@@ -132,17 +137,40 @@ export default function ChartsList() {
                     </div>
                   </div>
                 </div>
-                
                 <div className="flex items-center space-x-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="flex items-center space-x-1"
-                    data-testid={`button-view-${chart.id}`}
-                  >
-                    <Eye size={14} />
-                    <span>View</span>
-                  </Button>
+                  <Dialog open={openChartId === chart.id} onOpenChange={(open) => setOpenChartId(open ? chart.id : null)}>
+                    <DialogTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="flex items-center space-x-1"
+                        data-testid={`button-view-${chart.id}`}
+                      >
+                        <Eye size={14} />
+                        <span>View</span>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl">
+                      <DialogHeader>
+                        <DialogTitle>{chart.title}</DialogTitle>
+                        <DialogDescription>
+                          <div className="mt-2 mb-4">
+                            <Badge variant="secondary" className="text-xs mb-2">
+                              {getChartTypeLabel(chart.type)}
+                            </Badge>
+                          </div>
+                          <div className="text-sm text-gray-600 space-y-1 mb-4">
+                            <p><span className="font-medium">X-Axis:</span> {chart.xAxis}</p>
+                            <p><span className="font-medium">Y-Axis:</span> {chart.yAxis}</p>
+                            <p className="text-xs text-gray-500">Created: {new Date(chart.createdAt).toLocaleDateString()}</p>
+                          </div>
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="mt-4">
+                        <ChartRenderer chart={chart} />
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                   <Button 
                     variant="outline" 
                     size="sm"

@@ -31,8 +31,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    if (meData?.user) {
-      setUser(meData.user);
+    if (meData && typeof meData === 'object' && 'user' in meData) {
+      setUser(meData.user as User);
     }
     setIsLoading(meLoading);
   }, [meData, meLoading]);
