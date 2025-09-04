@@ -25,6 +25,7 @@ export interface IStorage {
   getChart(id: string): Promise<Chart | undefined>;
   getChartsByUser(userId: string): Promise<Chart[]>;
   getChartsByFile(fileId: string): Promise<Chart[]>;
+  getAllCharts(): Promise<Chart[]>;
 
   // Admin Requests
   createAdminRequest(request: InsertAdminRequest): Promise<AdminRequest>;
@@ -172,6 +173,10 @@ export class MemStorage implements IStorage {
 
   async getChartsByFile(fileId: string): Promise<Chart[]> {
     return Array.from(this.charts.values()).filter(chart => chart.fileId === fileId);
+  }
+
+  async getAllCharts(): Promise<Chart[]> {
+    return Array.from(this.charts.values());
   }
 
   // Admin Requests

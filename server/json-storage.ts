@@ -24,6 +24,7 @@ export interface IJsonStorage {
   getChart(id: string): Promise<Chart | undefined>;
   getChartsByUser(userId: string): Promise<Chart[]>;
   getChartsByFile(fileId: string): Promise<Chart[]>;
+  getAllCharts(): Promise<Chart[]>;
 
   // Admin Requests
   createAdminRequest(request: InsertAdminRequest): Promise<AdminRequest>;
@@ -220,6 +221,10 @@ export class JsonStorage implements IJsonStorage {
 
   async getChartsByFile(fileId: string): Promise<Chart[]> {
     return this.data.charts.filter(chart => chart.fileId === fileId);
+  }
+
+  async getAllCharts(): Promise<Chart[]> {
+    return [...this.data.charts];
   }
 
   // Admin Requests

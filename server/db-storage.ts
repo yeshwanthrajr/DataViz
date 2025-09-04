@@ -25,6 +25,7 @@ export interface IDbStorage {
   getChart(id: string): Promise<Chart | undefined>;
   getChartsByUser(userId: string): Promise<Chart[]>;
   getChartsByFile(fileId: string): Promise<Chart[]>;
+  getAllCharts(): Promise<Chart[]>;
 
   // Admin Requests
   createAdminRequest(request: InsertAdminRequest): Promise<AdminRequest>;
@@ -141,6 +142,10 @@ export class DbStorage implements IDbStorage {
 
   async getChartsByFile(fileId: string): Promise<Chart[]> {
     return await db.select().from(charts).where(eq(charts.fileId, fileId));
+  }
+
+  async getAllCharts(): Promise<Chart[]> {
+    return await db.select().from(charts);
   }
 
   // Admin Requests

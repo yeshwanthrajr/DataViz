@@ -345,7 +345,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/charts", authenticateToken, async (req: any, res) => {
     try {
-      const charts = await storage.getChartsByUser(req.user.id);
+      let charts;
+
+      if (req.user.role === "superadmin" || req.user.role === "admin") {
+        // Admin and super-admin can see all charts
+        charts = await storage.getAllCharts();
+      } else {
+        // Regular users can only see their own charts
+        charts = await storage.getChartsByUser(req.user.id);
+      }
+
       res.json(charts);
     } catch (error) {
       res.status(500).json({ message: "Server error" });

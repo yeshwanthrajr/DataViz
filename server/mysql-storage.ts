@@ -23,6 +23,7 @@ export interface IMySqlStorage {
   getChart(id: string): Promise<Chart | undefined>;
   getChartsByUser(userId: string): Promise<Chart[]>;
   getChartsByFile(fileId: string): Promise<Chart[]>;
+  getAllCharts(): Promise<Chart[]>;
 
   // Admin Requests
   createAdminRequest(request: InsertAdminRequest): Promise<AdminRequest>;
@@ -380,6 +381,17 @@ export class MySqlStorage implements IMySqlStorage {
     const [rows] = await this.pool.execute(
       "SELECT id, user_id as userId, file_id as fileId, title, type, x_axis as xAxis, y_axis as yAxis, config, created_at as createdAt FROM charts WHERE file_id = ? ORDER BY created_at DESC",
       [fileId]
+    );
+
+    return (rows as Chart[]).map(chart => ({
+      ...chart,
+      config: JSON.parse(chart.config as any || "{}"),
+    }));
+  }
+
+  async getAllCharts(): Promise<Chart[]> {
+    const [rows] = await this.pool.execute(
+      "SELECT id, user_id as userId, file_id as fileId, title, type, x_axis as xAxis, y_axis as yAxis, config, created_at as createdAt FROM charts ORDER BY created_at DESC"
     );
 
     return (rows as Chart[]).map(chart => ({

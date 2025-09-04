@@ -1,8 +1,8 @@
-# DataViz Pro
+# dataviz
 
 ## Overview
 
-DataViz Pro is a full-stack web application that enables users to upload Excel files and generate interactive charts from their data. The application features a role-based system with three user levels: regular users, admins, and super admins. Built with a modern tech stack including React, Express.js, and PostgreSQL, the platform provides secure file management, data visualization capabilities, and comprehensive administrative controls.
+dataviz is a full-stack web application that enables users to upload Excel files and generate interactive charts from their data. The application features a role-based system with three user levels: regular users, admins, and super admins. Built with a modern tech stack including React, Express.js, and PostgreSQL, the platform provides secure file management, data visualization capabilities, and comprehensive administrative controls.
 
 ## User Preferences
 

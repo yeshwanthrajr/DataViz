@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "37d4de3c-a1ba-4c92-bd1f-4fe23535cf2c",
-      "email": "superadmin@datavizpro.com",
+      "email": "superadmin@dataviz.com",
       "password": "$2b$10$1SwkOhQbT0HjRgj2.tsVqOasCc.IMnvO9wCwf1pVZXwvLAVW5r6rG",
       "role": "superadmin",
       "name": "Super Admin",
@@ -10,7 +10,7 @@
     },
     {
       "id": "5c616e41-e1a1-42d7-838c-076ff91d480a",
-      "email": "admin@datavizpro.com",
+      "email": "admin@dataviz.com",
       "password": "$2b$10$1SwkOhQbT0HjRgj2.tsVqOasCc.IMnvO9wCwf1pVZXwvLAVW5r6rG",
       "role": "admin",
       "name": "Admin User",
@@ -18,7 +18,7 @@
     },
     {
       "id": "39440964-70b1-4860-b4f6-6a24e6e6302e",
-      "email": "user@datavizpro.com",
+      "email": "user@dataviz.com",
       "password": "$2b$10$1SwkOhQbT0HjRgj2.tsVqOasCc.IMnvO9wCwf1pVZXwvLAVW5r6rG",
       "role": "user",
       "name": "John Doe",
@@ -749,6 +749,219 @@
       "uploadedAt": "2025-09-03T14:32:26.089Z",
       "approvedBy": "5c616e41-e1a1-42d7-838c-076ff91d480a",
       "approvedAt": "2025-09-03T14:34:04.736Z"
+    },
+    {
+      "id": "e63a80a8-fb44-4b8b-a772-aba0562dd049",
+      "userId": "39440964-70b1-4860-b4f6-6a24e6e6302e",
+      "filename": "1b231721c2f3482a94263e006a39fb1b",
+      "originalName": "On the Rise Bakery Web Traffic.xlsx",
+      "path": "uploads\\1b231721c2f3482a94263e006a39fb1b",
+      "status": "approved",
+      "data": [
+        {
+          "City": "Amsterdam",
+          "Country": "Netherlands",
+          "Region": "EMEA",
+          "Continent": "Europe",
+          "Avg. # of Page Views per Visitor ": 9.257382821612133,
+          "Number of Unique Visitors": 6023
+        },
+        {
+          "City": "Beijing",
+          "Country": "China",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 5.605269995716185,
+          "Number of Unique Visitors": 9085.489141893433
+        },
+        {
+          "City": "Bogota",
+          "Country": "Colombia",
+          "Region": "South America ",
+          "Continent": "South America",
+          "Avg. # of Page Views per Visitor ": 3.5138901956926096,
+          "Number of Unique Visitors": 9082.125453215449
+        },
+        {
+          "City": "Buenos Aires",
+          "Country": "Argentina",
+          "Region": "South America ",
+          "Continent": "South America",
+          "Avg. # of Page Views per Visitor ": 1.3483218952699738,
+          "Number of Unique Visitors": 1099.837675573159
+        },
+        {
+          "City": "Dhaka",
+          "Country": "Bangladesh",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 1.8035484851557293,
+          "Number of Unique Visitors": 5003.526879955566
+        },
+        {
+          "City": "Dubai",
+          "Country": "UAE",
+          "Region": "EMEA",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 4.278377210154888,
+          "Number of Unique Visitors": 7002.947899749714
+        },
+        {
+          "City": "Johannesburg",
+          "Country": "South Africa",
+          "Region": "EMEA",
+          "Continent": "Africa",
+          "Avg. # of Page Views per Visitor ": 9.625172005576996,
+          "Number of Unique Visitors": 8065.327007249045
+        },
+        {
+          "City": "Karachi",
+          "Country": "Pakistan",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 8.016937900993042,
+          "Number of Unique Visitors": 6016.10605593705
+        },
+        {
+          "City": "Kinshasa",
+          "Country": "Democratic Republic of the Congo",
+          "Region": "EMEA",
+          "Continent": "Africa",
+          "Avg. # of Page Views per Visitor ": 7.65250880441076,
+          "Number of Unique Visitors": 8070.119665076948
+        },
+        {
+          "City": "Kolkata",
+          "Country": "India",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 2,
+          "Number of Unique Visitors": 5011.682925794428
+        },
+        {
+          "City": "Krakow",
+          "Country": "Poland",
+          "Region": "EMEA",
+          "Continent": "Europe",
+          "Avg. # of Page Views per Visitor ": 2.5066334977634086,
+          "Number of Unique Visitors": 6041.73486942349
+        },
+        {
+          "City": "Kuala Lumpur",
+          "Country": "Malaysia",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 4.870792393805515,
+          "Number of Unique Visitors": 7018.762600272394
+        },
+        {
+          "City": "Lagos",
+          "Country": "Nigeria",
+          "Region": "EMEA",
+          "Continent": "Africa",
+          "Avg. # of Page Views per Visitor ": 2.4410762007230167,
+          "Number of Unique Visitors": 7069.686616272787
+        },
+        {
+          "City": "Lima",
+          "Country": "Peru",
+          "Region": "South America ",
+          "Continent": "South America",
+          "Avg. # of Page Views per Visitor ": 7.616640054786398,
+          "Number of Unique Visitors": 12092.943382675387
+        },
+        {
+          "City": "London",
+          "Country": "United Kingdom",
+          "Region": "EMEA",
+          "Continent": "Europe",
+          "Avg. # of Page Views per Visitor ": 0.7509573925135515,
+          "Number of Unique Visitors": 9035.982883412917
+        },
+        {
+          "City": "Manila",
+          "Country": "Philippines",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 6.138456246336165,
+          "Number of Unique Visitors": 5077.280063307388
+        },
+        {
+          "City": "Mexico City",
+          "Country": "Mexico",
+          "Region": "North America - Mexico",
+          "Continent": "North America",
+          "Avg. # of Page Views per Visitor ": 6.479203866769041,
+          "Number of Unique Visitors": 9018.278167973725
+        },
+        {
+          "City": "Mumbai",
+          "Country": "India",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 7.838844459140454,
+          "Number of Unique Visitors": 8062.976873179029
+        },
+        {
+          "City": "Nairobi",
+          "Country": "Kenya",
+          "Region": "EMEA",
+          "Continent": "Africa",
+          "Avg. # of Page Views per Visitor ": 4.355943957605636,
+          "Number of Unique Visitors": 5015.894982110632
+        },
+        {
+          "City": "New York",
+          "Country": "United States",
+          "Region": "North America - East ",
+          "Continent": "North America",
+          "Avg. # of Page Views per Visitor ": 6.52554496335002,
+          "Number of Unique Visitors": 8050.46646695143
+        },
+        {
+          "City": "Osaka",
+          "Country": "Japan",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 4.584276204452177,
+          "Number of Unique Visitors": 5025.768706417392
+        },
+        {
+          "City": "Rio de Janeiro",
+          "Country": "Brazil",
+          "Region": "South America ",
+          "Continent": "South America",
+          "Avg. # of Page Views per Visitor ": 8.262553733219347,
+          "Number of Unique Visitors": 5064.368275632165
+        },
+        {
+          "City": "Sao Paulo",
+          "Country": "Brazil",
+          "Region": "AsiaPac",
+          "Continent": "South America",
+          "Avg. # of Page Views per Visitor ": 7.695936061358832,
+          "Number of Unique Visitors": 10024.650908578398
+        },
+        {
+          "City": "Shanghai",
+          "Country": "China",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 1.9382879316597823,
+          "Number of Unique Visitors": 4012.2473013707217
+        },
+        {
+          "City": "Tokyo",
+          "Country": "Japan",
+          "Region": "AsiaPac",
+          "Continent": "Asia",
+          "Avg. # of Page Views per Visitor ": 1.2693343390723655,
+          "Number of Unique Visitors": 2008.759880201406
+        }
+      ],
+      "uploadedAt": "2025-09-04T04:59:07.288Z",
+      "approvedBy": "5c616e41-e1a1-42d7-838c-076ff91d480a",
+      "approvedAt": "2025-09-04T05:00:07.664Z"
     }
   ],
   "charts": [
@@ -828,6 +1041,28 @@
       "yAxis": "Number of Unique Visitors",
       "config": {},
       "createdAt": "2025-09-03T14:32:55.440Z"
+    },
+    {
+      "id": "5ffc6905-aa1f-4125-8e58-6fd0e04556cb",
+      "userId": "39440964-70b1-4860-b4f6-6a24e6e6302e",
+      "fileId": "cb2ed7d5-9f43-456b-96c6-10905dd97de0",
+      "title": "ca",
+      "type": "pie",
+      "xAxis": "Avg. # of Page Views per Visitor ",
+      "yAxis": "Country",
+      "config": {},
+      "createdAt": "2025-09-04T04:59:19.715Z"
+    },
+    {
+      "id": "91a930f5-fa41-4fb3-b23a-0628135e6fff",
+      "userId": "39440964-70b1-4860-b4f6-6a24e6e6302e",
+      "fileId": "6aec2c57-d2a2-47c3-973e-6e2a0da41704",
+      "title": "findal",
+      "type": "pie",
+      "xAxis": "Continent",
+      "yAxis": "Avg. # of Page Views per Visitor ",
+      "config": {},
+      "createdAt": "2025-09-04T05:06:02.360Z"
     }
   ],
   "adminRequests": []
